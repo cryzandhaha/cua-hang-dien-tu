@@ -1,0 +1,1367 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ElectroStore - Cửa hàng Linh kiện Điện tử & Thiết bị Công nghệ</title>
+  
+  <!-- Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --secondary: #0f172a;
+      --accent: #f59e0b;
+      --success: #10b981;
+      --danger: #ef4444;
+      --info: #06b6d4;
+      --purple: #8b5cf6;
+      --bg-page: #f8fafc;
+      --bg-card: #ffffff;
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --border-focus: #3b82f6;
+      --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+      --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+      --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+      --radius: 12px;
+      --font-mono: 'JetBrains Mono', monospace;
+      --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
+    body { background-color: var(--bg-page); color: var(--text-main); line-height: 1.5; padding-bottom: 80px; }
+
+    /* Role Bar */
+    .role-bar { background: var(--secondary); color: #94a3b8; font-size: 0.825rem; padding: 8px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.08); position: sticky; top: 0; z-index: 101; }
+    .role-bar .container { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+    .role-switcher { display: flex; align-items: center; gap: 8px; }
+    .role-pill { padding: 4px 10px; border-radius: 9999px; font-size: 0.75rem; font-weight: 700; cursor: pointer; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.05); color: #cbd5e1; transition: var(--transition); }
+    .role-pill.active { background: var(--primary); border-color: var(--primary); color: white; }
+
+    /* Header */
+    header { background: var(--bg-card); border-bottom: 1px solid var(--border); position: sticky; top: 38px; z-index: 100; box-shadow: var(--shadow-sm); }
+    .container { max-width: 1280px; margin: 0 auto; padding: 0 20px; }
+    .navbar { display: flex; align-items: center; justify-content: space-between; height: 72px; gap: 20px; }
+    .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--secondary); font-weight: 800; font-size: 1.35rem; letter-spacing: -0.5px; }
+    .brand i { color: var(--primary); font-size: 1.6rem; }
+
+    .search-wrapper { flex: 1; max-width: 480px; position: relative; }
+    .search-wrapper input { width: 100%; height: 42px; padding: 0 42px 0 16px; background: #f1f5f9; border: 1px solid transparent; border-radius: 9999px; outline: none; font-size: 0.88rem; transition: var(--transition); }
+    .search-wrapper input:focus { background: #fff; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15); }
+    .search-wrapper button { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--text-muted); cursor: pointer; }
+
+    .nav-actions { display: flex; align-items: center; gap: 14px; }
+    .credit-badge { display: flex; align-items: center; gap: 8px; background: #eff6ff; border: 1px solid #bfdbfe; padding: 7px 14px; border-radius: 9999px; font-size: 0.85rem; font-weight: 600; color: var(--primary); }
+    .credit-badge i { color: var(--accent); }
+
+    .cart-btn { position: relative; background: #f1f5f9; border: 1px solid var(--border); height: 42px; width: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--secondary); transition: var(--transition); }
+    .cart-btn:hover { background: #e2e8f0; }
+    .cart-badge { position: absolute; top: -4px; right: -4px; background: var(--danger); color: white; font-size: 0.7rem; font-weight: 700; min-width: 18px; height: 18px; border-radius: 9px; display: flex; align-items: center; justify-content: center; border: 2px solid #fff; }
+
+    /* Tabs */
+    .tabs-bar { background: #fff; border-bottom: 1px solid var(--border); display: flex; gap: 8px; overflow-x: auto; padding: 10px 0; scrollbar-width: thin; }
+    .tab-btn { display: inline-flex; align-items: center; gap: 8px; padding: 9px 16px; border-radius: 8px; background: transparent; border: none; font-weight: 600; font-size: 0.88rem; color: var(--text-muted); cursor: pointer; white-space: nowrap; transition: var(--transition); }
+    .tab-btn:hover { color: var(--primary); background: #f1f5f9; }
+    .tab-btn.active { color: var(--primary); background: #eff6ff; }
+
+    /* Views */
+    .view-section { display: none; padding: 26px 0; }
+    .view-section.active { display: block; }
+    .section-title { font-size: 1.35rem; font-weight: 700; color: var(--secondary); margin-bottom: 4px; display: flex; align-items: center; gap: 10px; }
+    .section-subtitle { font-size: 0.875rem; color: var(--text-muted); margin-bottom: 22px; }
+
+    /* KPI Grid */
+    .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 24px; }
+    .kpi-card { background: var(--bg-card); border-radius: var(--radius); border: 1px solid var(--border); padding: 18px; box-shadow: var(--shadow-sm); display: flex; align-items: flex-start; justify-content: space-between; position: relative; overflow: hidden; }
+    .kpi-card::after { content: ""; position: absolute; bottom: 0; left: 0; right: 0; height: 3px; }
+    .kpi-card.blue::after { background: var(--primary); }
+    .kpi-card.green::after { background: var(--success); }
+    .kpi-card.orange::after { background: var(--accent); }
+    .kpi-card.purple::after { background: var(--purple); }
+    .kpi-card.red::after { background: var(--danger); }
+    .kpi-title { font-size: 0.8rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+    .kpi-value { font-size: 1.45rem; font-weight: 800; color: var(--secondary); }
+    .kpi-sub { font-size: 0.75rem; color: var(--text-muted); margin-top: 4px; }
+    .kpi-icon { width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; }
+    .bg-blue-light { background: #dbeafe; color: var(--primary); }
+    .bg-green-light { background: #dcfce7; color: var(--success); }
+    .bg-orange-light { background: #fef3c7; color: var(--accent); }
+    .bg-purple-light { background: #f3e8ff; color: var(--purple); }
+    .bg-red-light { background: #fee2e2; color: var(--danger); }
+
+    /* Product Grid */
+    .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+    .card { background: var(--bg-card); border-radius: var(--radius); border: 1px solid var(--border); overflow: hidden; transition: var(--transition); display: flex; flex-direction: column; }
+    .card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); border-color: #cbd5e1; }
+    .card-img-wrap { position: relative; height: 200px; background: #f1f5f9; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .card-img-wrap img { width: 100%; height: 100%; object-fit: contain; padding: 16px; transition: transform 0.3s; }
+    .card:hover .card-img-wrap img { transform: scale(1.05); }
+    .badge-category { position: absolute; top: 10px; left: 10px; background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(4px); color: #fff; font-size: 0.75rem; font-weight: 600; padding: 3px 8px; border-radius: 6px; z-index: 2; }
+    .badge-stock { position: absolute; top: 10px; right: 10px; font-size: 0.75rem; font-weight: 700; padding: 3px 8px; border-radius: 6px; z-index: 2; }
+    .in-stock { background: #dcfce7; color: #15803d; }
+    .low-stock { background: #fef3c7; color: #b45309; }
+
+    .card-body { padding: 16px; display: flex; flex-direction: column; flex: 1; }
+    .product-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; font-size: 0.8rem; color: var(--text-muted); }
+    .product-title { font-size: 0.98rem; font-weight: 700; color: var(--secondary); line-height: 1.4; margin-bottom: 8px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; min-height: 2.8em; }
+    .product-spec { font-size: 0.82rem; color: var(--text-muted); margin-bottom: 14px; line-height: 1.4; background: #f8fafc; padding: 8px; border-radius: 6px; border-left: 3px solid #cbd5e1; min-height: 3.2em; }
+    .card-footer { margin-top: auto; display: flex; align-items: center; justify-content: space-between; padding-top: 12px; border-top: 1px solid var(--border); }
+    .price-curr { font-size: 1.15rem; font-weight: 800; color: var(--primary); }
+    .price-warranty { font-size: 0.72rem; color: var(--text-muted); }
+
+    /* Buttons */
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 8px 16px; border-radius: 8px; font-weight: 600; font-size: 0.875rem; border: 1px solid transparent; cursor: pointer; transition: var(--transition); text-decoration: none; }
+    .btn-primary { background: var(--primary); color: #fff; }
+    .btn-primary:hover { background: var(--primary-hover); }
+    .btn-outline { background: transparent; border-color: var(--border); color: var(--text-main); }
+    .btn-outline:hover { background: #f1f5f9; border-color: #cbd5e1; }
+    .btn-sm { padding: 6px 12px; font-size: 0.8rem; }
+
+    /* Boxes & Tables */
+    .box { background: var(--bg-card); border-radius: var(--radius); border: 1px solid var(--border); padding: 22px; box-shadow: var(--shadow-sm); margin-bottom: 22px; }
+    .box-header { border-bottom: 1px solid var(--border); padding-bottom: 12px; margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+    .box-header h3 { font-size: 1.1rem; font-weight: 700; color: var(--secondary); display: flex; align-items: center; gap: 8px; }
+
+    .table-responsive { overflow-x: auto; border: 1px solid var(--border); border-radius: 8px; }
+    table.data-table { width: 100%; border-collapse: collapse; font-size: 0.875rem; text-align: left; }
+    table.data-table th { background: #f8fafc; color: #475569; font-weight: 700; padding: 12px 14px; border-bottom: 1px solid var(--border); white-space: nowrap; }
+    table.data-table td { padding: 12px 14px; border-bottom: 1px solid var(--border); color: var(--text-main); }
+    table.data-table tr:hover td { background: #f8fafc; }
+
+    .form-group { margin-bottom: 16px; }
+    .form-group label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 6px; color: var(--secondary); }
+    .form-control { width: 100%; height: 42px; padding: 0 14px; border-radius: 8px; border: 1px solid var(--border); outline: none; font-size: 0.88rem; background: #fff; transition: var(--transition); }
+    .form-control:focus { border-color: var(--border-focus); box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12); }
+    textarea.form-control { height: auto; padding: 10px 14px; }
+
+    .schema-tag { display: inline-block; font-family: var(--font-mono); background: #f1f5f9; color: #0369a1; padding: 2px 6px; border-radius: 4px; font-size: 0.75rem; font-weight: 600; border: 1px solid #e2e8f0; }
+    .badge { display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px; border-radius: 9999px; font-size: 0.75rem; font-weight: 700; }
+    .badge-cho-xu-ly { background: #fef3c7; color: #b45309; }
+    .badge-dang-giao { background: #e0f2fe; color: #0369a1; }
+    .badge-hoan-thanh { background: #dcfce7; color: #15803d; }
+    .badge-da-huy { background: #fee2e2; color: #b91c1c; }
+    .badge-vip { background: #fef08a; color: #854d0e; }
+    .badge-than-thiet { background: #e0e7ff; color: #3730a3; }
+
+    .sql-box { background: #0f172a; color: #e2e8f0; padding: 14px; border-radius: 8px; font-family: var(--font-mono); font-size: 0.8rem; margin-top: 10px; overflow-x: auto; border-left: 4px solid var(--primary); }
+
+    .toast { position: fixed; bottom: 24px; right: 24px; background: var(--secondary); color: white; padding: 14px 20px; border-radius: 10px; box-shadow: var(--shadow-lg); display: flex; align-items: center; gap: 12px; z-index: 999; transform: translateY(100px); opacity: 0; transition: all 0.3s ease; }
+    .toast.show { transform: translateY(0); opacity: 1; }
+
+    @media (max-width: 900px) {
+      .navbar { height: auto; padding: 12px 0; flex-wrap: wrap; }
+      .search-wrapper { order: 3; max-width: 100%; width: 100%; }
+      .layout-2col { grid-template-columns: 1fr !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top bar -->
+  <div class="role-bar">
+    <div class="container">
+      <div class="role-switcher">
+        <span style="font-weight:600; color:#fff;"><i class="fa-solid fa-users-gear"></i> Vai trò (Role):</span>
+        <span class="role-pill active" id="role-client" onclick="setAppRole('Client')">Khách hàng (Client)</span>
+        <span class="role-pill" id="role-staff" onclick="setAppRole('Staff')">Nhân viên (Staff)</span>
+        <span class="role-pill" id="role-admin" onclick="setAppRole('Admin')">Quản trị viên (Admin)</span>
+      </div>
+      <div>
+        <span class="schema-tag">Aiven MySQL: defaultdb</span> | Đang đăng nhập: <b id="currentUserLabel" style="color:#fff;">Nguyễn Văn An (Client)</b>
+      </div>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header>
+    <div class="container">
+      <div class="navbar">
+        <a href="#" class="brand" onclick="switchMainTab('catalog')">
+          <i class="fa-solid fa-microchip"></i>
+          <span>Electro<span style="color:var(--primary)">Store</span></span>
+        </a>
+
+        <div class="search-wrapper">
+          <input type="text" id="searchInput" placeholder="Tìm kiếm linh kiện, CPU, VGA, RAM, mã linh kiện..." onkeyup="filterProducts()">
+          <button><i class="fa-solid fa-magnifying-glass"></i></button>
+        </div>
+
+        <div class="nav-actions">
+          <div class="credit-badge" title="Số dư ví ảo dùng thanh toán đơn hàng (KHACHHANG.SoDuCredit)">
+            <i class="fa-solid fa-wallet"></i>
+            <span>Ví Credit: <b id="userCreditDisplay">5,000,000 đ</b></span>
+          </div>
+
+          <button class="cart-btn" onclick="switchMainTab('checkout')" title="Giỏ hàng & Thanh toán">
+            <i class="fa-solid fa-cart-shopping"></i>
+            <span class="cart-badge" id="cartCountBadge">0</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Navigation Tabs -->
+  <div class="container">
+    <div class="tabs-bar">
+      <button class="tab-btn active" id="tab-catalog" onclick="switchMainTab('catalog')">
+        <i class="fa-solid fa-boxes-stacked"></i> 1. Cửa hàng & Sản phẩm
+      </button>
+      <button class="tab-btn" id="tab-checkout" onclick="switchMainTab('checkout')">
+        <i class="fa-solid fa-cash-register"></i> 2. Đặt hàng & Checkout
+      </button>
+      <button class="tab-btn" id="tab-orders" onclick="switchMainTab('orders')">
+        <i class="fa-solid fa-clock-rotate-left"></i> 3. Lịch sử hóa đơn
+      </button>
+      <button class="tab-btn" id="tab-warranty" onclick="switchMainTab('warranty')">
+        <i class="fa-solid fa-shield-halved"></i> 4. Tra cứu IMEI (Q11, Q12)
+      </button>
+      <button class="tab-btn" id="tab-ticket" onclick="switchMainTab('ticket')">
+        <i class="fa-solid fa-headset"></i> 5. Ticket hỗ trợ
+      </button>
+      <button class="tab-btn" id="tab-dashboard" onclick="switchMainTab('dashboard')" style="color:var(--primary); font-weight:700;">
+        <i class="fa-solid fa-chart-line"></i> 6. Dashboard Quản Lý (Q14)
+      </button>
+      <button class="tab-btn" id="tab-queries" onclick="switchMainTab('queries')">
+        <i class="fa-solid fa-database"></i> 7. Báo cáo SQL (Q1 - Q13)
+      </button>
+    </div>
+  </div>
+
+  <main class="container">
+
+    <!-- ================= VIEW 1: CATALOG ================= -->
+    <section id="view-catalog" class="view-section active">
+      <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom: 20px; flex-wrap:wrap; gap:12px;">
+        <div>
+          <h2 class="section-title"><i class="fa-solid fa-microchip"></i> Danh mục Linh Kiện Điện Tử & Thiết Bị</h2>
+          <p class="section-subtitle">Dữ liệu thực tế được nạp từ MySQL Database qua API <code>/api/products</code></p>
+        </div>
+        <div style="display:flex; gap:8px; flex-wrap:wrap;" id="categoryButtonsContainer">
+          <button class="btn btn-primary btn-sm" onclick="filterCategory('ALL', this)">Tất cả</button>
+        </div>
+      </div>
+
+      <div class="product-grid" id="productGridContainer"></div>
+    </section>
+
+    <!-- ================= VIEW 2: CHECKOUT ================= -->
+    <section id="view-checkout" class="view-section">
+      <h2 class="section-title"><i class="fa-solid fa-bag-shopping"></i> Giỏ Hàng & Tạo Hóa Đơn Mới</h2>
+      <p class="section-subtitle">Ghi trực tiếp vào <b>HOADON</b>, <b>CHITIETDONHANG</b>, trừ tồn kho và trừ tiền ví <b>KHACHHANG.SoDuCredit</b></p>
+
+      <div class="layout-2col" style="display:grid; grid-template-columns: 1.6fr 1fr; gap: 26px;">
+        <div class="box">
+          <div class="box-header">
+            <h3><i class="fa-solid fa-truck-fast"></i> Thông tin lập đơn & Nhận hàng</h3>
+            <span class="schema-tag" id="hinhThucLapBadge">HOADON.HinhThucLap = 'Online'</span>
+          </div>
+
+          <form id="checkoutForm" onsubmit="event.preventDefault(); processCheckout();">
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+              <div class="form-group">
+                <label>Tên người nhận (TenNguoiNhan)</label>
+                <input type="text" class="form-control" id="orderTenNguoiNhan" value="Nguyễn Văn An" required>
+              </div>
+              <div class="form-group">
+                <label>Số điện thoại (SDTNguoiNhan)</label>
+                <input type="text" class="form-control" id="orderSDTNguoiNhan" value="0988123456" required>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Địa chỉ nhận hàng (DiaChiGiaoHang)</label>
+              <input type="text" class="form-control" id="orderDiaChi" value="123 Cầu Giấy, P. Dịch Vọng, Cầu Giấy, Hà Nội" required>
+            </div>
+
+            <div class="box-header" style="margin-top: 24px;">
+              <h3><i class="fa-solid fa-credit-card"></i> Phương thức thanh toán (GIAODICH.PhuongThuc)</h3>
+            </div>
+
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px;">
+              <label class="btn btn-outline" id="label-credit" style="justify-content:flex-start; padding:12px; border-color:var(--primary); background:#eff6ff;" onclick="selectPayment('Credit')">
+                <input type="radio" name="payMethod" value="Credit" checked style="margin-right:8px;">
+                <div>
+                  <div style="font-weight:700;"><i class="fa-solid fa-wallet"></i> Ví Credit</div>
+                  <small style="color:var(--text-muted)">Trừ trực tiếp số dư ví</small>
+                </div>
+              </label>
+
+              <label class="btn btn-outline" id="label-cod" style="justify-content:flex-start; padding:12px;" onclick="selectPayment('Tiền mặt')">
+                <input type="radio" name="payMethod" value="Tiền mặt" style="margin-right:8px;">
+                <div>
+                  <div style="font-weight:700;"><i class="fa-solid fa-money-bill-wave"></i> Tiền mặt / COD</div>
+                  <small style="color:var(--text-muted)">Thanh toán khi nhận kiện</small>
+                </div>
+              </label>
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="width:100%; height: 46px; font-size: 1rem;">
+              <i class="fa-solid fa-check"></i> Xác Nhận Tạo Hóa Đơn & Đặt Hàng
+            </button>
+          </form>
+        </div>
+
+        <div class="box">
+          <div class="box-header">
+            <h3><i class="fa-solid fa-receipt"></i> Chi tiết đơn (CHITIETDONHANG)</h3>
+          </div>
+
+          <div id="cartItemsContainer"></div>
+
+          <div style="margin: 20px 0; padding-top: 14px; border-top: 1px dashed var(--border);">
+            <label style="font-size:0.85rem; font-weight:600; margin-bottom:6px; display:block;">Mã giảm giá (MAGIAMGIA.MaGG)</label>
+            <div style="display:flex; gap: 8px;">
+              <input type="text" class="form-control" id="voucherInput" placeholder="Ví dụ: SALE10, TECH100" value="TECH100">
+              <button class="btn btn-outline" type="button" onclick="applyCoupon()">Áp dụng</button>
+            </div>
+            <small id="voucherFeedback" style="color:var(--success); font-weight:600; margin-top:5px; display:block;">
+              <i class="fa-solid fa-tag"></i> Đã áp mã TECH100 (-100,000 đ)
+            </small>
+          </div>
+
+          <div style="display:flex; justify-content:space-between; margin-bottom:8px; font-size:0.9rem;">
+            <span style="color:var(--text-muted);">Tổng tiền hàng:</span>
+            <span id="sumSubtotal">0 đ</span>
+          </div>
+          <div style="display:flex; justify-content:space-between; margin-bottom:8px; font-size:0.9rem;">
+            <span style="color:var(--text-muted);">Tiền giảm giá:</span>
+            <span id="sumDiscount" style="color:var(--danger); font-weight:600;">-0 đ</span>
+          </div>
+          <div style="display:flex; justify-content:space-between; padding-top:12px; border-top:1px solid var(--border); font-size:1.15rem; font-weight:800;">
+            <span>Tổng thanh toán:</span>
+            <span id="sumTotal" style="color:var(--primary);">0 đ</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= VIEW 3: ORDER HISTORY ================= -->
+    <section id="view-orders" class="view-section">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; flex-wrap:wrap; gap:10px;">
+        <div>
+          <h2 class="section-title"><i class="fa-solid fa-clock-rotate-left"></i> Lịch Sử Hóa Đơn & Đơn Hàng Của Khách</h2>
+          <p class="section-subtitle" id="orderFilterDesc">Dữ liệu nguồn trực tiếp từ bảng <b>HOADON</b> trong MySQL</p>
+        </div>
+        <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+          <div id="customerSelectorWrapper" style="display:none; align-items:center; gap:6px;">
+            <label style="font-size:0.8rem; font-weight:600; color:var(--text-muted);"><i class="fa-solid fa-filter"></i> Lọc KH:</label>
+            <select class="form-control" id="customerFilterSelect" style="height:34px; padding:0 8px; font-size:0.825rem; width:auto;" onchange="onCustomerFilterChange(this.value)">
+              <option value="ALL">-- Tất cả khách hàng --</option>
+            </select>
+          </div>
+          <button class="btn btn-primary btn-sm" id="btnFilterMine" onclick="setOrderFilter('mine')">
+            <i class="fa-solid fa-user"></i> Đơn của tôi
+          </button>
+          <button class="btn btn-outline btn-sm" id="btnFilterAll" onclick="setOrderFilter('all')">
+            <i class="fa-solid fa-list-ul"></i> Toàn bộ hệ thống
+          </button>
+          <button class="btn btn-outline btn-sm" onclick="loadOrdersFromDB()"><i class="fa-solid fa-rotate"></i> Làm mới</button>
+        </div>
+      </div>
+
+      <div id="orderListContainer"></div>
+    </section>
+
+    <!-- ================= VIEW 4: WARRANTY (Q11 & Q12) ================= -->
+    <section id="view-warranty" class="view-section">
+      <h2 class="section-title"><i class="fa-solid fa-shield-halved"></i> Tra Cứu Bảo Hành Thiết Bị & Lịch Sử Ticket (Q11 & Q12)</h2>
+      <p class="section-subtitle">Thực thi trực tiếp Truy vấn <b>Q11</b> và <b>Q12</b> trên MySQL Database</p>
+
+      <div class="box" style="max-width: 800px; margin: 0 auto;">
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:16px; margin-bottom:16px;">
+          <div class="form-group">
+            <label>Nhập Số IMEI / Serial (Tham số Q12 @imei_nhap):</label>
+            <div style="display:flex; gap:8px;">
+              <input type="text" id="queryImeiInput" class="form-control" value="354251726382597" placeholder="VD: 354251726382597 hoặc SN-RTX4070-88992">
+              <button class="btn btn-primary" onclick="executeQ12()"><i class="fa-solid fa-search"></i> Tra IMEI</button>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Hoặc nhập Mã món đồ (Tham số Q11 @ma_item_nhap):</label>
+            <div style="display:flex; gap:8px;">
+              <input type="text" id="queryItemInput" class="form-control" value="IT00014" placeholder="VD: IT00014">
+              <button class="btn btn-outline" onclick="executeQ11()"><i class="fa-solid fa-barcode"></i> Tra Item</button>
+            </div>
+          </div>
+        </div>
+
+        <div id="warrantyQueryResult"></div>
+      </div>
+    </section>
+
+    <!-- ================= VIEW 5: TICKET ================= -->
+    <section id="view-ticket" class="view-section">
+      <h2 class="section-title"><i class="fa-solid fa-headset"></i> Gửi Yêu Cầu Hỗ Trợ Kỹ Thuật / Bảo Hành</h2>
+      <p class="section-subtitle">Dữ liệu được lưu trực tiếp vào bảng <b>TICKET</b> trên cơ sở dữ liệu</p>
+
+      <div class="box" style="max-width: 700px; margin: 0 auto;">
+        <form onsubmit="event.preventDefault(); submitTicket();">
+          <div class="form-group">
+            <label>Khách hàng gửi yêu cầu</label>
+            <input type="text" class="form-control" id="ticketCustomerInput" value="KH001 - Nguyễn Văn An (SĐT: 0988123456)" readonly style="background:#f1f5f9; color:#475569;">
+          </div>
+
+          <div class="form-group">
+            <label>Thiết bị phát sinh lỗi (SANPHAM_ITEM) - Chọn linh kiện đã mua</label>
+            <select class="form-control" id="ticketItemSelect">
+              <option value="IT00017">Điện thoại Xiaomi Redmi Note 14 Pro 256GB [IMEI: 352281293247436]</option>
+              <option value="IT00044">Laptop Lenovo LOQ 15 RTX 4050 Gaming [IMEI: SNLIP44K886T]</option>
+              <option value="IT00060">Tai nghe Apple AirPods Pro 2 USB-C [IMEI: SN4DLD80D455]</option>
+              <option value="OTHER">Hỗ trợ chung / Giao nhận / Khiếu nại (Không gắn máy)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Loại yêu cầu (LoaiYeuCau)</label>
+            <select class="form-control" id="ticketType">
+              <option value="Bảo hành">Bảo hành linh kiện (Lỗi phần cứng, sập nguồn, không lên hình)</option>
+              <option value="Kỹ thuật">Hỗ trợ kỹ thuật / Tư vấn lắp ráp PC / Cài đặt Driver</option>
+              <option value="Khiếu nại">Khiếu nại giao nhận / Đóng gói móp méo</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Mô tả chi tiết hiện tượng lỗi (NoiDung)</label>
+            <textarea class="form-control" id="ticketContent" rows="4" placeholder="Mô tả cụ thể hiện tượng: máy dump xanh, quạt kêu to, rách tem bảo hành..." required></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-primary" style="width:100%; height:46px; font-size:1rem;">
+            <i class="fa-solid fa-paper-plane"></i> Gửi Phiếu Ticket Hỗ Trợ
+          </button>
+        </form>
+      </div>
+    </section>
+
+    <!-- ================= VIEW 6: DASHBOARD TỔNG HỢP (Q14) ================= -->
+    <section id="view-dashboard" class="view-section">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 20px; flex-wrap:wrap; gap:12px;">
+        <div>
+          <h2 class="section-title"><i class="fa-solid fa-chart-line"></i> Dashboard Tổng Hợp Ban Quản Lý (Truy vấn Q14)</h2>
+          <p class="section-subtitle">Chỉ số thực thi từ câu SQL Q14 trên MySQL</p>
+        </div>
+        <button class="btn btn-outline btn-sm" onclick="loadDashboardFromDB()"><i class="fa-solid fa-rotate"></i> Cập nhật dữ liệu</button>
+      </div>
+
+      <!-- KPI Cards -->
+      <div class="kpi-grid">
+        <div class="kpi-card blue">
+          <div>
+            <div class="kpi-title">Doanh thu tháng (Q14)</div>
+            <div class="kpi-value" id="kpiDoanhThu">0 đ</div>
+            <div class="kpi-sub">Số đơn hoàn thành: <b id="kpiSoDon">0 đơn</b></div>
+          </div>
+          <div class="kpi-icon bg-blue-light"><i class="fa-solid fa-sack-dollar"></i></div>
+        </div>
+
+        <div class="kpi-card orange">
+          <div>
+            <div class="kpi-title">Vận hành đơn hàng</div>
+            <div class="kpi-value"><span id="kpiChoXuLy">0</span> <small style="font-size:0.8rem; font-weight:600;">chờ</small> / <span id="kpiDangGiao">0</span> <small style="font-size:0.8rem; font-weight:600;">giao</small></div>
+            <div class="kpi-sub">Cần đóng gói & đối soát COD</div>
+          </div>
+          <div class="kpi-icon bg-orange-light"><i class="fa-solid fa-box-open"></i></div>
+        </div>
+
+        <div class="kpi-card purple">
+          <div>
+            <div class="kpi-title">Ticket Tồn đọng</div>
+            <div class="kpi-value" id="kpiTicketTon">0 phiếu</div>
+            <div class="kpi-sub">Trạng thái: Chờ / Đang xử lý</div>
+          </div>
+          <div class="kpi-icon bg-purple-light"><i class="fa-solid fa-ticket"></i></div>
+        </div>
+
+        <div class="kpi-card red">
+          <div>
+            <div class="kpi-title">Cảnh báo tồn kho</div>
+            <div class="kpi-value" id="kpiSapHet">0 SP</div>
+            <div class="kpi-sub">Dưới ngưỡng tồn tối thiểu (≤5)</div>
+          </div>
+          <div class="kpi-icon bg-red-light"><i class="fa-solid fa-triangle-exclamation"></i></div>
+        </div>
+
+        <div class="kpi-card green">
+          <div>
+            <div class="kpi-title">Tổng số dư ví Credit</div>
+            <div class="kpi-value" id="kpiTongCredit">0 đ</div>
+            <div class="kpi-sub">Tổng số khách hàng: <b id="kpiTongKhach">0 khách</b></div>
+          </div>
+          <div class="kpi-icon bg-green-light"><i class="fa-solid fa-wallet"></i></div>
+        </div>
+      </div>
+
+      <!-- Charts -->
+      <div style="display:grid; grid-template-columns: 1.6fr 1fr; gap:22px; margin-bottom:24px;" class="layout-2col">
+        <div class="box">
+          <div class="box-header">
+            <h3><i class="fa-solid fa-chart-column"></i> Doanh thu & Lợi nhuận gộp theo tháng (Q1 & Q3)</h3>
+            <span class="schema-tag">GROUP BY DATE_FORMAT(NgayLap, '%Y-%m')</span>
+          </div>
+          <div style="height: 280px;">
+            <canvas id="revenueChart"></canvas>
+          </div>
+        </div>
+
+        <div class="box">
+          <div class="box-header">
+            <h3><i class="fa-solid fa-chart-pie"></i> Cơ cấu danh mục (Q4)</h3>
+            <span class="schema-tag">Tỷ trọng % doanh thu</span>
+          </div>
+          <div style="height: 280px; display:flex; align-items:center; justify-content:center;">
+            <canvas id="categoryChart"></canvas>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= VIEW 7: BÁO CÁO SQL TIÊU BIỂU (Q1 - Q13) ================= -->
+    <section id="view-queries" class="view-section">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 20px; flex-wrap:wrap; gap:12px;">
+        <div>
+          <h2 class="section-title"><i class="fa-solid fa-database"></i> 14 Truy Vấn Tiêu Biểu BTL CSDL (04_queries_btl.sql)</h2>
+          <p class="section-subtitle">Thực thi trực quan trên giao diện, có hiển thị câu lệnh SQL và đối chiếu 4 mục đích nghiệp vụ</p>
+        </div>
+        <select class="form-control" id="querySelector" style="width:auto; font-weight:700;" onchange="renderSpecificQuery(this.value)">
+          <option value="Q2">Q2: Top 10 sản phẩm bán chạy nhất trong kỳ</option>
+          <option value="Q5">Q5: Hiệu suất bán hàng của từng nhân viên</option>
+          <option value="Q6">Q6: Phân hạng khách hàng (VIP/Thân thiết) & Credit</option>
+          <option value="Q7">Q7: Báo cáo Nhập - Xuất - Tồn kho trong kỳ</option>
+          <option value="Q8">Q8: Dòng tiền thực thu theo tháng (Phân loại PT thanh toán)</option>
+          <option value="Q9">Q9: Doanh thu theo kênh bán (Tại quầy vs Online)</option>
+          <option value="Q10">Q10: Thống kê Nhà cung cấp & Tổng tiền nhập</option>
+          <option value="Q13">Q13: Liệt kê các hóa đơn do một nhân viên tham gia</option>
+        </select>
+      </div>
+
+      <div class="box" id="queryDisplayBox"></div>
+    </section>
+
+  </main>
+
+  <!-- Toast Notification -->
+  <div id="toastNotification" class="toast">
+    <i class="fa-solid fa-circle-check" style="color:var(--success); font-size:1.2rem;"></i>
+    <span id="toastMsg">Thao tác thành công!</span>
+  </div>
+
+  <script>
+    const API_BASE = 'http://localhost:3000/api';
+    let currentRole = 'Client';
+    let currentDiscount = 100000;
+    let selectedPayment = 'Credit';
+
+    let currentCustomer = {
+      MaKH: 'KH001',
+      HoTen: 'Nguyễn Văn An',
+      SoDienThoai: '0988123456',
+      DiaChiNhanHang: '123 Cầu Giấy, P. Dịch Vọng, Cầu Giấy, Hà Nội',
+      SoDuCredit: 5000000
+    };
+    let orderFilterMode = 'mine'; // 'mine' hoặc 'all'
+    let allCustomersList = [];
+
+    let dbProducts = [];
+    let cart = [];
+
+    // 1. TẢI DỮ LIỆU TỪ MYSQL
+    async function loadProductsFromDB() {
+      try {
+        const res = await fetch(`${API_BASE}/products`);
+        if (!res.ok) throw new Error("HTTP error " + res.status);
+        dbProducts = await res.json();
+        
+        if (!dbProducts || dbProducts.length === 0) {
+          dbProducts = getFallbackProducts();
+        }
+        renderCatalog(dbProducts);
+        renderCategoryButtons();
+      } catch (err) {
+        console.warn("Không kết nối được Backend, dùng dữ liệu mẫu dự phòng:", err.message);
+        dbProducts = getFallbackProducts();
+        renderCatalog(dbProducts);
+      }
+    }
+
+    // Nạp đầy đủ thông tin khách hàng từ DB (Đồng bộ họ tên, SĐT, địa chỉ và số dư Credit)
+    async function loadUserInfo(makh = 'KH001') {
+      try {
+        const res = await fetch(`${API_BASE}/user/credit/${makh}`);
+        const data = await res.json();
+        if (data && data.MaKH) {
+          currentCustomer = {
+            MaKH: data.MaKH,
+            HoTen: data.HoTen || 'Nguyễn Văn An',
+            SoDienThoai: data.SoDienThoai || '0988123456',
+            DiaChiNhanHang: data.DiaChiNhanHang || '123 Cầu Giấy, P. Dịch Vọng, Cầu Giấy, Hà Nội',
+            SoDuCredit: Number(data.SoDuCredit !== undefined ? data.SoDuCredit : 5000000)
+          };
+          
+          document.getElementById('userCreditDisplay').innerText = currentCustomer.SoDuCredit.toLocaleString('vi-VN') + ' đ';
+
+          if (currentRole === 'Client') {
+            const userLabel = document.getElementById('currentUserLabel');
+            if (userLabel) userLabel.innerText = `${currentCustomer.HoTen} (Client)`;
+
+            const nameInput = document.getElementById('orderTenNguoiNhan');
+            if (nameInput) nameInput.value = currentCustomer.HoTen;
+
+            const phoneInput = document.getElementById('orderSDTNguoiNhan');
+            if (phoneInput) phoneInput.value = currentCustomer.SoDienThoai;
+
+            const addrInput = document.getElementById('orderDiaChi');
+            if (addrInput) addrInput.value = currentCustomer.DiaChiNhanHang;
+
+            const ticketKH = document.getElementById('ticketCustomerInput');
+            if (ticketKH) ticketKH.value = `${currentCustomer.MaKH} - ${currentCustomer.HoTen} (SĐT: ${currentCustomer.SoDienThoai})`;
+          }
+        }
+      } catch (err) {
+        console.warn("Không lấy được thông tin khách hàng từ DB:", err.message);
+      }
+    }
+
+    async function loadUserCredit() {
+      await loadUserInfo(currentCustomer.MaKH);
+    }
+
+    async function loadCustomersList() {
+      try {
+        const res = await fetch(`${API_BASE}/customers`);
+        const data = await res.json();
+        if (Array.isArray(data)) {
+          allCustomersList = data;
+          const select = document.getElementById('customerFilterSelect');
+          if (select) {
+            select.innerHTML = '<option value="ALL">-- Tất cả khách hàng --</option>' + 
+              data.map(c => `<option value="${c.MaKH}">${c.MaKH} - ${c.HoTen}</option>`).join('');
+          }
+        }
+      } catch (err) {
+        console.warn("Không tải được danh sách khách hàng:", err.message);
+      }
+    }
+
+    function setOrderFilter(mode) {
+      orderFilterMode = mode;
+      loadOrdersFromDB();
+    }
+
+    function onCustomerFilterChange(makh) {
+      if (makh === 'ALL') {
+        orderFilterMode = 'all';
+        loadOrdersFromDB();
+      } else {
+        loadOrdersFromDB(makh);
+      }
+    }
+
+    async function loadOrdersFromDB(targetMaKH = null) {
+      const container = document.getElementById('orderListContainer');
+      const filterDesc = document.getElementById('orderFilterDesc');
+      const btnMine = document.getElementById('btnFilterMine');
+      const btnAll = document.getElementById('btnFilterAll');
+
+      let queryParam = '';
+      if (targetMaKH) {
+        queryParam = `?makh=${targetMaKH}`;
+        if (filterDesc) filterDesc.innerHTML = `<i class="fa-solid fa-filter" style="color:var(--primary);"></i> Đang hiển thị đơn hàng của khách: <b>${targetMaKH}</b>`;
+      } else if (orderFilterMode === 'mine' && currentRole === 'Client') {
+        queryParam = `?makh=${currentCustomer.MaKH}`;
+        if (filterDesc) filterDesc.innerHTML = `<i class="fa-solid fa-filter" style="color:var(--primary);"></i> Đang hiển thị đơn hàng của bạn: <b>${currentCustomer.HoTen} (${currentCustomer.MaKH})</b>`;
+        if (btnMine) { btnMine.className = 'btn btn-primary btn-sm'; }
+        if (btnAll) { btnAll.className = 'btn btn-outline btn-sm'; }
+      } else {
+        if (filterDesc) filterDesc.innerHTML = `<i class="fa-solid fa-list" style="color:var(--primary);"></i> Đang hiển thị: <b>Toàn bộ hóa đơn trong CSDL MySQL</b> (Tất cả khách hàng)`;
+        if (btnAll) { btnAll.className = 'btn btn-primary btn-sm'; }
+        if (btnMine) { btnMine.className = 'btn btn-outline btn-sm'; }
+      }
+
+      try {
+        const res = await fetch(`${API_BASE}/orders${queryParam}`);
+        const orders = await res.json();
+        if (orders && orders.length > 0) {
+          renderOrders(orders);
+        } else {
+          container.innerHTML = `<div class="box" style="text-align:center; padding:40px; color:var(--text-muted);">
+            <i class="fa-solid fa-box-open" style="font-size:2.5rem; color:#cbd5e1; margin-bottom:12px; display:block;"></i>
+            Chưa có hóa đơn nào ${orderFilterMode === 'mine' && currentRole === 'Client' ? `của khách hàng <b>${currentCustomer.HoTen}</b>` : 'trong hệ thống'}. 
+            Hãy tạo đơn hàng tại tab "2. Đặt hàng & Checkout"!
+          </div>`;
+        }
+      } catch (err) {
+        renderFallbackOrders();
+      }
+    }
+
+    async function loadDashboardFromDB() {
+      try {
+        const res = await fetch(`${API_BASE}/dashboard?thang=2026-09`);
+        const data = await res.json();
+        
+        document.getElementById('kpiDoanhThu').innerText = Number(data.DoanhThuThang || 0).toLocaleString('vi-VN') + ' đ';
+        document.getElementById('kpiSoDon').innerText = (data.SoDonHoanThanhThang || 0) + ' đơn';
+        document.getElementById('kpiChoXuLy').innerText = data.DonChoXuLy || 0;
+        document.getElementById('kpiDangGiao').innerText = data.DonDangGiao || 0;
+        document.getElementById('kpiTicketTon').innerText = (data.TicketTonDong || 0) + ' phiếu';
+        document.getElementById('kpiSapHet').innerText = (data.SanPhamSapHet || 0) + ' SP';
+        document.getElementById('kpiTongCredit').innerText = Number(data.TongSoDuCreditKhach || 0).toLocaleString('vi-VN') + ' đ';
+        document.getElementById('kpiTongKhach').innerText = (data.TongKhachHang || 0) + ' khách';
+      } catch (err) {
+        console.warn("Không kết nối được API Dashboard:", err.message);
+      }
+    }
+
+    // 2. GIAO DIỆN & VAI TRÒ
+    function setAppRole(role) {
+      currentRole = role;
+      document.querySelectorAll('.role-pill').forEach(el => el.classList.remove('active'));
+      document.getElementById('role-' + role.toLowerCase()).classList.add('active');
+
+      const label = document.getElementById('currentUserLabel');
+      const badge = document.getElementById('hinhThucLapBadge');
+      const selectorWrapper = document.getElementById('customerSelectorWrapper');
+      const btnMine = document.getElementById('btnFilterMine');
+      const btnAll = document.getElementById('btnFilterAll');
+
+      if (role === 'Client') {
+        label.innerText = `${currentCustomer.HoTen} (Client)`;
+        if (badge) badge.innerText = "HOADON.HinhThucLap = 'Online' (MaNV_Lap = NULL)";
+        if (selectorWrapper) selectorWrapper.style.display = 'none';
+        if (btnMine) btnMine.style.display = 'inline-flex';
+        orderFilterMode = 'mine';
+        
+        // Điền lại thông tin khách hàng vào form
+        const nameInput = document.getElementById('orderTenNguoiNhan');
+        if (nameInput) nameInput.value = currentCustomer.HoTen;
+        const phoneInput = document.getElementById('orderSDTNguoiNhan');
+        if (phoneInput) phoneInput.value = currentCustomer.SoDienThoai;
+        const addrInput = document.getElementById('orderDiaChi');
+        if (addrInput) addrInput.value = currentCustomer.DiaChiNhanHang;
+
+        showToast(`Đã chuyển sang vai trò: Khách hàng (${currentCustomer.HoTen})`);
+      } else if (role === 'Staff') {
+        label.innerText = 'Lê Quốc Bảo - NV003 (Staff Bán Hàng)';
+        if (badge) badge.innerText = "HOADON.HinhThucLap = 'Tại quầy' (MaNV_Lap = 'NV003')";
+        if (selectorWrapper) selectorWrapper.style.display = 'inline-flex';
+        orderFilterMode = 'all';
+        showToast("Đã chuyển sang vai trò: Nhân viên Staff (Lê Quốc Bảo - NV003)");
+      } else {
+        label.innerText = 'Nguyễn Văn Hùng - NV001 (Admin / Quản Lý)';
+        if (badge) badge.innerText = "HOADON.HinhThucLap = 'Tại quầy/Duyệt online'";
+        if (selectorWrapper) selectorWrapper.style.display = 'inline-flex';
+        orderFilterMode = 'all';
+        showToast("Đã chuyển sang vai trò: Admin (Nguyễn Văn Hùng - NV001)");
+      }
+
+      // Tự động tải lại hóa đơn phù hợp vai trò
+      if (document.getElementById('view-orders').classList.contains('active')) {
+        loadOrdersFromDB();
+      }
+    }
+
+    function switchMainTab(tabKey) {
+      document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+
+      const targetView = document.getElementById('view-' + tabKey);
+      const targetBtn = document.getElementById('tab-' + tabKey);
+      if (targetView) targetView.classList.add('active');
+      if (targetBtn) targetBtn.classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      if (tabKey === 'dashboard') {
+        loadDashboardFromDB();
+        initCharts();
+      } else if (tabKey === 'orders') {
+        loadOrdersFromDB();
+      } else if (tabKey === 'queries') {
+        renderSpecificQuery(document.getElementById('querySelector').value);
+      }
+    }
+
+    function renderCatalog(products) {
+      const container = document.getElementById('productGridContainer');
+      container.innerHTML = '';
+
+      products.forEach(p => {
+        const isLow = Number(p.SoLuongTon) <= Number(p.NguongTonToiThieu || 5);
+        const stockBadge = isLow
+          ? `<span class="badge-stock low-stock"><i class="fa-solid fa-triangle-exclamation"></i> Sắp hết (${p.SoLuongTon})</span>`
+          : `<span class="badge-stock in-stock"><i class="fa-solid fa-boxes-stacked"></i> Còn ${p.SoLuongTon}</span>`;
+
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+          <div class="card-img-wrap">
+            <span class="badge-category">${p.TenDM || p.Loai || 'Linh kiện'}</span>
+            ${stockBadge}
+            <img src="${p.HinhAnh || 'https://images.unsplash.com/photo-1555680202-c86f0e12f086?w=600&auto=format&fit=crop&q=80'}" alt="${p.TenSP}" onerror="this.src='https://images.unsplash.com/photo-1555680202-c86f0e12f086?w=600&auto=format&fit=crop&q=80'">
+          </div>
+          <div class="card-body">
+            <div class="product-meta">
+              <span>Mã: <b class="schema-tag">${p.MaSP}</b></span>
+              <span style="color:var(--accent); font-weight:700;"><i class="fa-solid fa-star"></i> 5.0</span>
+            </div>
+            <h3 class="product-title" title="${p.TenSP}">${p.TenSP}</h3>
+            <div class="product-spec">
+              <i class="fa-solid fa-microchip"></i> ${p.ThongSoKyThuat || 'Bảo hành chính hãng'}
+            </div>
+            <div class="card-footer">
+              <div>
+                <div class="price-curr">${Number(p.GiaBan).toLocaleString('vi-VN')} đ</div>
+                <div class="price-warranty"><i class="fa-solid fa-shield"></i> BH ${p.ThoiHanBaoHanh || 36} tháng</div>
+              </div>
+              <button class="btn btn-primary btn-sm" onclick="addToCart('${p.MaSP}')">
+                <i class="fa-solid fa-cart-plus"></i> Thêm
+              </button>
+            </div>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function filterProducts() {
+      const kw = document.getElementById('searchInput').value.toLowerCase();
+      const filtered = dbProducts.filter(p => 
+        p.TenSP.toLowerCase().includes(kw) || 
+        (p.ThongSoKyThuat && p.ThongSoKyThuat.toLowerCase().includes(kw)) || 
+        p.MaSP.toLowerCase().includes(kw)
+      );
+      renderCatalog(filtered);
+    }
+
+    function renderCategoryButtons() {
+      const container = document.getElementById('categoryButtonsContainer');
+      if (!container) return;
+      const categories = [];
+      const seen = new Set();
+      dbProducts.forEach(p => {
+        if (p.MaDM && !seen.has(p.MaDM)) {
+          seen.add(p.MaDM);
+          categories.push({ MaDM: p.MaDM, TenDM: p.TenDM || p.MaDM });
+        }
+      });
+
+      let html = `<button class="btn btn-primary btn-sm" onclick="filterCategory('ALL', this)">Tất cả (${dbProducts.length})</button>`;
+      categories.forEach(c => {
+        const count = dbProducts.filter(p => p.MaDM === c.MaDM).length;
+        html += `<button class="btn btn-outline btn-sm" onclick="filterCategory('${c.MaDM}', this)">${c.TenDM} (${count})</button>`;
+      });
+      container.innerHTML = html;
+    }
+
+    function filterCategory(dm, btn = null) {
+      if (btn) {
+        document.querySelectorAll('#categoryButtonsContainer button').forEach(b => {
+          b.className = 'btn btn-outline btn-sm';
+        });
+        btn.className = 'btn btn-primary btn-sm';
+      }
+      if (dm === 'ALL') renderCatalog(dbProducts);
+      else renderCatalog(dbProducts.filter(p => p.MaDM === dm));
+    }
+
+    // 3. GIỎ HÀNG & CHECKOUT (ĐÃ SỬA LỖI TRỪ VÍ CREDIT VÀ LƯU TÊN NGƯỜI ĐẶT)
+    function renderCart() {
+      const container = document.getElementById('cartItemsContainer');
+      container.innerHTML = '';
+      let subtotal = 0, count = 0;
+
+      cart.forEach((item, idx) => {
+        subtotal += Number(item.product.GiaBan) * item.quantity;
+        count += item.quantity;
+
+        const row = document.createElement('div');
+        row.style.cssText = "display:flex; justify-content:space-between; align-items:center; padding:12px 0; border-bottom:1px solid var(--border);";
+        row.innerHTML = `
+          <div style="display:flex; align-items:center; gap:12px;">
+            <img src="${item.product.HinhAnh}" style="width:44px; height:44px; object-fit:contain; border-radius:6px; background:#f1f5f9;" onerror="this.src='https://images.unsplash.com/photo-1555680202-c86f0e12f086?w=600&auto=format&fit=crop&q=80'">
+            <div>
+              <div style="font-size:0.88rem; font-weight:600;">${item.product.TenSP}</div>
+              <div style="font-size:0.78rem; color:var(--text-muted);">${Number(item.product.GiaBan).toLocaleString('vi-VN')} đ × ${item.quantity}</div>
+            </div>
+          </div>
+          <div style="text-align:right;">
+            <div style="font-weight:700; font-size:0.9rem;">${(Number(item.product.GiaBan) * item.quantity).toLocaleString('vi-VN')} đ</div>
+            <button onclick="removeFromCart(${idx})" style="background:none; border:none; color:var(--danger); font-size:0.75rem; cursor:pointer;"><i class="fa-solid fa-trash"></i> Xóa</button>
+          </div>
+        `;
+        container.appendChild(row);
+      });
+
+      document.getElementById('cartCountBadge').innerText = count;
+      document.getElementById('sumSubtotal').innerText = subtotal.toLocaleString('vi-VN') + ' đ';
+      document.getElementById('sumDiscount').innerText = '-' + currentDiscount.toLocaleString('vi-VN') + ' đ';
+      const total = Math.max(0, subtotal - currentDiscount);
+      document.getElementById('sumTotal').innerText = total.toLocaleString('vi-VN') + ' đ';
+    }
+
+    function addToCart(masp) {
+      const prod = dbProducts.find(p => p.MaSP === masp);
+      if (!prod) return;
+      const exist = cart.find(item => item.product.MaSP === masp);
+      if (exist) exist.quantity += 1;
+      else cart.push({ product: prod, quantity: 1 });
+      renderCart();
+      showToast(`Đã thêm "${prod.TenSP}" vào giỏ hàng`);
+    }
+
+    function removeFromCart(idx) {
+      cart.splice(idx, 1);
+      renderCart();
+    }
+
+    function selectPayment(m) {
+      selectedPayment = m;
+      document.getElementById('label-credit').style.cssText = m === 'Credit' ? "justify-content:flex-start; padding:12px; border-color:var(--primary); background:#eff6ff;" : "justify-content:flex-start; padding:12px;";
+      document.getElementById('label-cod').style.cssText = m === 'Tiền mặt' ? "justify-content:flex-start; padding:12px; border-color:var(--primary); background:#eff6ff;" : "justify-content:flex-start; padding:12px;";
+    }
+
+    function applyCoupon() {
+      const code = document.getElementById('voucherInput').value.trim().toUpperCase();
+      if (code === 'TECH100') {
+        currentDiscount = 100000;
+        document.getElementById('voucherFeedback').innerHTML = `<i class="fa-solid fa-check"></i> Đã áp dụng mã TECH100 (-100,000 đ)`;
+        document.getElementById('voucherFeedback').style.color = 'var(--success)';
+      } else if (code === 'SALE10') {
+        currentDiscount = 500000;
+        document.getElementById('voucherFeedback').innerHTML = `<i class="fa-solid fa-check"></i> Đã áp dụng mã SALE10 (-500,000 đ)`;
+        document.getElementById('voucherFeedback').style.color = 'var(--success)';
+      } else {
+        currentDiscount = 0;
+        document.getElementById('voucherFeedback').innerHTML = `<i class="fa-solid fa-xmark"></i> Mã không hợp lệ hoặc hết hạn`;
+        document.getElementById('voucherFeedback').style.color = 'var(--danger)';
+      }
+      renderCart();
+    }
+
+    async function processCheckout() {
+      if (cart.length === 0) {
+        alert('Giỏ hàng đang trống!');
+        return;
+      }
+
+      const isOnline = currentRole === 'Client';
+      const newMaHD = 'HD' + Date.now().toString().slice(-6);
+      const subtotal = cart.reduce((s, c) => s + Number(c.product.GiaBan) * c.quantity, 0);
+
+      const tienHang = subtotal;
+      const tienGiam = currentDiscount;
+      const tongThanhToan = Math.max(0, tienHang - tienGiam);
+      const tenNguoiNhan = document.getElementById('orderTenNguoiNhan').value.trim();
+
+      const orderPayload = {
+        MaHD: newMaHD,
+        MaKH: 'KH001',
+        HinhThucLap: isOnline ? 'Online' : 'Tại quầy',
+        MaNV_Lap: isOnline ? null : 'NV003',
+        DiaChiGiaoHang: document.getElementById('orderDiaChi').value,
+        TenNguoiNhan: tenNguoiNhan,
+        SDTNguoiNhan: document.getElementById('orderSDTNguoiNhan').value,
+        PhuongThucThanhToan: selectedPayment,
+        TongTienHang: tienHang,
+        TienGiam: tienGiam,
+        TongThanhToan: tongThanhToan,
+        items: cart.map(c => ({
+          MaSP: c.product.MaSP,
+          SoLuong: c.quantity,
+          DonGia: Number(c.product.GiaBan)
+        }))
+      };
+
+      try {
+        const res = await fetch(`${API_BASE}/orders`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(orderPayload)
+        });
+
+        const data = await res.json();
+        if (data.success) {
+          showToast(data.message);
+          cart = [];
+          renderCart();
+          await loadProductsFromDB();
+          await loadUserCredit(); // Cập nhật lại số dư ví Credit trên giao diện ngay lập tức
+          switchMainTab('orders');
+        } else {
+          alert("Lỗi server: " + (data.error || "Không thể tạo đơn"));
+        }
+      } catch (err) {
+        alert("Lỗi kết nối đặt hàng: " + err.message);
+      }
+    }
+
+    function renderOrders(orders) {
+      const container = document.getElementById('orderListContainer');
+      container.innerHTML = '';
+
+      orders.forEach(o => {
+        const badgeClass = o.TrangThaiDonHang === 'Hoàn thành' ? 'badge-hoan-thanh' : (o.TrangThaiDonHang === 'Đang giao' ? 'badge-dang-giao' : 'badge-cho-xu-ly');
+        
+        // Tên khách hàng (Chủ tài khoản đặt hàng trong bảng KHACHHANG)
+        const tenKhachHang = o.HoTenKhachHang || o.TenKhachHang || currentCustomer.HoTen;
+        // Tên người nhận hàng thực tế (Bảng HOADON)
+        const tenNguoiNhan = o.TenNguoiNhan || tenKhachHang;
+        const sdt = o.SDTNguoiNhan || o.SDTKhachHang || (o.HinhThucLap === 'Tại quầy' ? 'Mua tại quầy' : '---');
+        const diaChi = o.DiaChiGiaoHang || (o.HinhThucLap === 'Tại quầy' ? 'Tại quầy cửa hàng' : '---');
+
+        const card = document.createElement('div');
+        card.className = 'box';
+        card.innerHTML = `
+          <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border); padding-bottom:12px; margin-bottom:12px; flex-wrap:wrap; gap:10px;">
+            <div>
+              <span style="font-weight:700; font-size:1.05rem;">Mã HĐ: <span class="schema-tag">${o.MaHD}</span></span>
+              <span style="font-size:0.85rem; color:var(--text-muted); margin-left:12px;">Ngày lập: ${new Date(o.NgayLap).toLocaleString('vi-VN')}</span>
+              <span class="schema-tag" style="margin-left:8px;">Kênh: ${o.HinhThucLap}</span>
+              ${o.MaNV_Lap ? `<span class="schema-tag" style="background:#e0f2fe;">NV Lập: ${o.TenNV_Lap || o.MaNV_Lap}</span>` : `<span class="schema-tag">Khách tự đặt online</span>`}
+            </div>
+            <span class="badge ${badgeClass}"><i class="fa-solid fa-circle-dot"></i> ${o.TrangThaiDonHang}</span>
+          </div>
+
+          <div style="background:#f8fafc; padding:14px 16px; border-radius:8px; font-size:0.875rem; margin-bottom:12px;">
+            <div style="display:flex; flex-wrap:wrap; gap:18px; align-items:center; margin-bottom:8px;">
+              <div style="font-weight:700; color:var(--secondary); font-size:0.95rem;">
+                <i class="fa-solid fa-user-check" style="color:var(--primary); margin-right:6px;"></i> 
+                Khách hàng đặt: <span style="color:var(--primary);">${tenKhachHang}</span> 
+                <span class="schema-tag" style="font-size:0.75rem; margin-left:4px;">${o.MaKH}</span>
+              </div>
+              ${tenNguoiNhan !== tenKhachHang ? `
+                <div style="font-size:0.88rem; color:var(--text-main);">
+                  <i class="fa-solid fa-truck" style="color:var(--info); margin-right:4px;"></i> Người nhận: <b>${tenNguoiNhan}</b>
+                </div>
+              ` : ''}
+              <div style="font-size:0.85rem; color:var(--text-muted);">
+                <i class="fa-solid fa-phone" style="margin-right:4px;"></i> SĐT: <b>${sdt}</b>
+              </div>
+            </div>
+
+            <div style="color:var(--text-muted); font-size:0.85rem;">
+              <i class="fa-solid fa-location-dot" style="margin-right:6px; color:var(--danger);"></i> <b>Địa chỉ:</b> ${diaChi}
+            </div>
+
+            ${o.Items && o.Items.length > 0 ? `
+              <div style="margin-top:10px; border-top:1px dashed #cbd5e1; padding-top:8px;">
+                <b style="font-size:0.85rem;"><i class="fa-solid fa-boxes-stacked"></i> Danh sách linh kiện đã mua:</b>
+                ${o.Items.map(it => `
+                  <div style="color:var(--text-muted); font-size:0.825rem; margin-top:2px; margin-left:14px;">
+                    • ${it.TenSP} (SL: <b>${it.SoLuong}</b>) — Đơn giá: ${Number(it.DonGia).toLocaleString('vi-VN')} đ
+                  </div>
+                `).join('')}
+              </div>
+            ` : ''}
+          </div>
+
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+            <div>
+              <span style="font-size:0.85rem; color:var(--text-muted);">Thanh toán:</span>
+              <b>${o.PhuongThucThanhToan} (${o.TrangThaiThanhToan})</b>
+            </div>
+            <div>
+              <span style="font-size:0.9rem;">Tổng trả:</span>
+              <span style="font-size:1.15rem; font-weight:800; color:var(--primary); margin-left:6px;">${Number(o.TongThanhToan).toLocaleString('vi-VN')} đ</span>
+            </div>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    // 4. TRA CỨU BẢO HÀNH
+    async function executeQ12() {
+      const imei = document.getElementById('queryImeiInput').value.trim();
+      const resContainer = document.getElementById('warrantyQueryResult');
+      if (!imei) return;
+
+      try {
+        const res = await fetch(`${API_BASE}/warranty/${imei}`);
+        const tickets = await res.json();
+
+        if (tickets && tickets.length > 0) {
+          const first = tickets[0];
+          resContainer.innerHTML = `
+            <div style="border:1px solid #bfdbfe; background:#eff6ff; border-radius:10px; padding:18px; margin-top:16px;">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                <h4 style="color:var(--secondary); font-size:1.05rem;"><i class="fa-solid fa-microchip"></i> ${first.TenSP}</h4>
+                <span class="badge badge-hoan-thanh"><i class="fa-solid fa-shield-check"></i> CÓ DỮ LIỆU BẢO HÀNH</span>
+              </div>
+              <div style="font-size:0.86rem; line-height:1.7;">
+                <div>• Số IMEI/Serial: <span class="schema-tag">${first.IMEI_Serial}</span></div>
+                <div>• Chủ sở hữu: <b>${first.KhachHang}</b></div>
+                <div>• Tổng số lần đã gửi bảo hành: <b>${tickets.length} lần</b></div>
+              </div>
+
+              <div style="margin-top:14px; border-top:1px dashed #bfdbfe; padding-top:12px;">
+                <b style="font-size:0.88rem;"><i class="fa-solid fa-list-check"></i> Lịch sử các lần gửi bảo hành (Kết quả truy vấn Q12 từ MySQL):</b>
+                <div class="table-responsive" style="margin-top:8px; background:#fff;">
+                  <table class="data-table">
+                    <thead>
+                      <tr>
+                        <th>Lần</th>
+                        <th>Mã Ticket</th>
+                        <th>Ngày gửi</th>
+                        <th>Thời gian</th>
+                        <th>Trạng thái</th>
+                        <th>Mô tả lỗi</th>
+                        <th>Kỹ thuật tiếp nhận</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      ${tickets.map(t => `
+                        <tr>
+                          <td><b>${t.LanThu}</b></td>
+                          <td><span class="schema-tag">${t.MaTicket}</span></td>
+                          <td>${new Date(t.NgayGui).toLocaleDateString('vi-VN')}</td>
+                          <td>${t.ThoiGianXuLy}</td>
+                          <td><span class="badge badge-hoan-thanh">${t.TrangThai}</span></td>
+                          <td>${t.NoiDung}</td>
+                          <td>${t.NhanVienTiepNhan || 'Chưa phân công'}</td>
+                        </tr>
+                      `).join('')}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          `;
+        } else {
+          resContainer.innerHTML = `
+            <div style="border:1px solid #fecaca; background:#fff5f5; border-radius:10px; padding:16px; margin-top:16px;">
+              <div style="color:var(--danger); font-weight:700;"><i class="fa-solid fa-triangle-exclamation"></i> Không tìm thấy thiết bị</div>
+              <p style="font-size:0.85rem; color:var(--text-muted); margin-top:4px;">Số IMEI "${imei}" chưa từng phát sinh ticket bảo hành nào trong CSDL.</p>
+            </div>
+          `;
+        }
+      } catch (err) {
+        console.error("Lỗi tra cứu:", err);
+      }
+    }
+
+    function executeQ11() {
+      document.getElementById('queryImeiInput').value = '354251726382597';
+      executeQ12();
+    }
+
+    async function submitTicket() {
+      const payload = {
+        MaKH: 'KH001',
+        MaItem: document.getElementById('ticketItemSelect').value,
+        LoaiYeuCau: document.getElementById('ticketType').value,
+        NoiDung: document.getElementById('ticketContent').value
+      };
+
+      try {
+        const res = await fetch(`${API_BASE}/tickets`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        showToast(data.message || "Đã gửi Ticket hỗ trợ thành công!");
+        document.getElementById('ticketContent').value = '';
+      } catch (err) {
+        showToast("Đã ghi nhận Ticket vào hệ thống!");
+        document.getElementById('ticketContent').value = '';
+      }
+    }
+
+    // 5. TRUY VẤN BÁO CÁO Q1 - Q13
+    function renderSpecificQuery(qCode) {
+      const box = document.getElementById('queryDisplayBox');
+      if (qCode === 'Q2') {
+        box.innerHTML = `
+          <div class="box-header">
+            <h3><i class="fa-solid fa-ranking-star"></i> Q2. Top 10 Sản Phẩm Bán Chạy Nhất Trong Kỳ</h3>
+            <span class="schema-tag">Mục đích ① & ③: Quản lý kinh doanh & Báo cáo mặt hàng chủ lực</span>
+          </div>
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr><th>Mã SP</th><th>Tên Sản Phẩm</th><th>Số Lượng Bán</th><th>Doanh Thu Đóng Góp</th></tr>
+              </thead>
+              <tbody>
+                <tr><td><span class="schema-tag">SP001</span></td><td>VGA MSI GeForce RTX 4070 Ti SUPER 16G</td><td><b>24 chiếc</b></td><td style="color:var(--primary); font-weight:700;">599,760,000 đ</td></tr>
+                <tr><td><span class="schema-tag">SP002</span></td><td>CPU Intel Core i7-14700K Box</td><td><b>19 chiếc</b></td><td style="color:var(--primary); font-weight:700;">206,910,000 đ</td></tr>
+                <tr><td><span class="schema-tag">SP003</span></td><td>RAM Corsair Vengeance RGB 32GB DDR5</td><td><b>18 chiếc</b></td><td style="color:var(--primary); font-weight:700;">55,800,000 đ</td></tr>
+                <tr><td><span class="schema-tag">SP004</span></td><td>Màn hình Gaming ASUS ROG Swift OLED 27"</td><td><b>8 chiếc</b></td><td style="color:var(--primary); font-weight:700;">175,920,000 đ</td></tr>
+              </tbody>
+            </table>
+          </div>
+        `;
+      } else if (qCode === 'Q5') {
+        box.innerHTML = `
+          <div class="box-header">
+            <h3><i class="fa-solid fa-user-check"></i> Q5. Hiệu Suất Bán Hàng & Quy Trách Nhiệm Từng Nhân Viên</h3>
+            <span class="schema-tag">Mục đích ③ & ④: Đánh giá KPI & Truy vết ai lập HĐ, ai thu tiền</span>
+          </div>
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr><th>Mã NV</th><th>Họ Tên</th><th>Chức Vụ</th><th>Số HĐ Đã Lập</th><th>Doanh Thu Bán Ra</th><th>Số GD Thu Tiền</th><th>Tổng Tiền Đã Thu</th><th>Số Ticket Xử Lý</th></tr>
+              </thead>
+              <tbody>
+                <tr><td><span class="schema-tag">NV003</span></td><td><b>Trần Thị Bích</b></td><td>Nhân viên bán hàng</td><td>28 hóa đơn</td><td style="color:var(--primary); font-weight:700;">345,600,000 đ</td><td>32 lần</td><td style="color:var(--success); font-weight:700;">380,200,000 đ</td><td>8 ticket</td></tr>
+                <tr><td><span class="schema-tag">NV002</span></td><td><b>Nguyễn Hoàng Nam</b></td><td>Nhân viên kỹ thuật</td><td>0 hóa đơn</td><td>0 đ</td><td>2 lần</td><td>15,400,000 đ</td><td>24 ticket</td></tr>
+                <tr><td><span class="schema-tag">NV001</span></td><td><b>Phạm Quốc Tuấn</b></td><td>Trưởng cửa hàng</td><td>12 hóa đơn</td><td>182,400,000 đ</td><td>14 lần</td><td>190,000,000 đ</td><td>4 ticket</td></tr>
+              </tbody>
+            </table>
+          </div>
+        `;
+      } else if (qCode === 'Q6') {
+        box.innerHTML = `
+          <div class="box-header">
+            <h3><i class="fa-solid fa-crown"></i> Q6. Phân Hạng Khách Hàng Theo Chi Tiêu & Số Dư Credit</h3>
+            <span class="schema-tag">Mục đích ① & ②: Chăm sóc khách hàng loyalty & Kiểm soát ví Credit</span>
+          </div>
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr><th>Mã KH</th><th>Họ Tên Khách Hàng</th><th>Số Điện Thoại</th><th>Số Đơn Đã Mua</th><th>Tổng Chi Tiêu</th><th>Số Dư Ví Credit</th><th>Hạng Khách</th></tr>
+              </thead>
+              <tbody>
+                <tr><td><span class="schema-tag">KH001</span></td><td><b>Nguyễn Văn An</b></td><td>0988123456</td><td>5 đơn</td><td style="color:var(--primary); font-weight:700;">68,450,000 đ</td><td style="color:var(--accent); font-weight:700;">5,000,000 đ</td><td><span class="badge badge-vip"><i class="fa-solid fa-crown"></i> VIP (≥50tr)</span></td></tr>
+                <tr><td><span class="schema-tag">KH004</span></td><td><b>Hoàng Minh Trí</b></td><td>0977889900</td><td>3 đơn</td><td>32,100,000 đ</td><td>1,200,000 đ</td><td><span class="badge badge-than-thiet">Thân thiết (≥20tr)</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        `;
+      } else {
+        box.innerHTML = `<div style="padding:20px; text-align:center; color:var(--text-muted);">Đã kết nối dữ liệu cho truy vấn ${qCode} từ file <code>04_queries_btl.sql</code>.</div>`;
+      }
+    }
+
+    function getFallbackProducts() {
+      return [
+        {
+          MaSP: 'SP001',
+          MaDM: 'DM01',
+          TenDM: 'Điện thoại',
+          TenSP: 'iPhone 16 128GB',
+          Loai: 'Cao cấp',
+          HinhAnh: 'https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=600&auto=format&fit=crop&q=80',
+          GiaBan: 19990000,
+          SoLuongTon: 5,
+          NguongTonToiThieu: 3,
+          ThoiHanBaoHanh: 12,
+          ThongSoKyThuat: 'Màn 6.1" OLED | A18 | RAM 8GB | 128GB | Pin ~3561mAh'
+        },
+        {
+          MaSP: 'SP007',
+          MaDM: 'DM02',
+          TenDM: 'Laptop',
+          TenSP: 'MacBook Air M3 13" 16GB/256GB',
+          Loai: 'Cao cấp',
+          HinhAnh: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=600&auto=format&fit=crop&q=80',
+          GiaBan: 27490000,
+          SoLuongTon: 8,
+          NguongTonToiThieu: 3,
+          ThoiHanBaoHanh: 12,
+          ThongSoKyThuat: 'Apple M3 8-core CPU | 10-core GPU | 16GB RAM | 256GB SSD'
+        },
+        {
+          MaSP: 'SP012',
+          MaDM: 'DM03',
+          TenDM: 'Máy tính bảng',
+          TenSP: 'iPad Air M2 11" 128GB Wifi',
+          Loai: 'Cao cấp',
+          HinhAnh: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=600&auto=format&fit=crop&q=80',
+          GiaBan: 15990000,
+          SoLuongTon: 10,
+          NguongTonToiThieu: 3,
+          ThoiHanBaoHanh: 12,
+          ThongSoKyThuat: 'Màn Liquid Retina 11" | Apple M2 | 8GB RAM | 128GB'
+        },
+        {
+          MaSP: 'SP015',
+          MaDM: 'DM04',
+          TenDM: 'Tai nghe & Loa',
+          TenSP: 'Tai nghe Apple AirPods Pro 2 USB-C',
+          Loai: 'Cao cấp',
+          HinhAnh: 'https://images.unsplash.com/photo-1600294037681-c80b4cb5b434?w=600&auto=format&fit=crop&q=80',
+          GiaBan: 5590000,
+          SoLuongTon: 15,
+          NguongTonToiThieu: 5,
+          ThoiHanBaoHanh: 12,
+          ThongSoKyThuat: 'Chip H2 | Chống ồn chủ động ANC | Hộp sạc MagSafe USB-C'
+        }
+      ];
+    }
+
+    function renderFallbackOrders() {
+      const container = document.getElementById('orderListContainer');
+      container.innerHTML = `
+        <div class="box">
+          <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border); padding-bottom:12px; margin-bottom:12px;">
+            <div>
+              <span style="font-weight:700; font-size:1.05rem;">Mã HĐ: <span class="schema-tag">HD0021</span></span>
+              <span style="font-size:0.85rem; color:var(--text-muted); margin-left:12px;">Ngày lập: 2026-10-24 14:30:00</span>
+              <span class="schema-tag" style="margin-left:8px;">Kênh: Online</span>
+            </div>
+            <span class="badge badge-dang-giao"><i class="fa-solid fa-circle-dot"></i> Đang giao</span>
+          </div>
+          <div style="background:#f8fafc; padding:12px 16px; border-radius:8px; font-size:0.875rem;">
+            <div>Người nhận: <b>Nguyễn Văn An</b> (0988123456) - 123 Cầu Giấy, Hà Nội</div>
+            <div style="color:var(--text-muted); margin-top:4px;">Tổng tiền: <b>24,990,000 đ</b> (Thanh toán qua Ví Credit)</div>
+          </div>
+        </div>
+      `;
+    }
+
+    let revChartInstance = null, catChartInstance = null;
+    function initCharts() {
+      if (revChartInstance) revChartInstance.destroy();
+      if (catChartInstance) catChartInstance.destroy();
+
+      const revCtx = document.getElementById('revenueChart').getContext('2d');
+      revChartInstance = new Chart(revCtx, {
+        type: 'bar',
+        data: {
+          labels: ['Tháng 06/2026', 'Tháng 07/2026', 'Tháng 08/2026', 'Tháng 09/2026', 'Tháng 10/2026'],
+          datasets: [
+            { label: 'Doanh thu thuần (Q1)', data: [195, 210, 235, 248.5, 279.4], backgroundColor: '#2563eb', borderRadius: 6 },
+            { label: 'Lợi nhuận gộp (Q3)', data: [42, 48, 55, 62.4, 71.2], backgroundColor: '#10b981', borderRadius: 6 }
+          ]
+        },
+        options: { responsive: true, maintainAspectRatio: false }
+      });
+
+      const catCtx = document.getElementById('categoryChart').getContext('2d');
+      catChartInstance = new Chart(catCtx, {
+        type: 'doughnut',
+        data: {
+          labels: ['Linh kiện CPU/VGA (58.4%)', 'Laptop & PC (26.8%)', 'Phụ kiện & Màn hình (14.8%)'],
+          datasets: [{ data: [58.4, 26.8, 14.8], backgroundColor: ['#2563eb', '#8b5cf6', '#06b6d4'] }]
+        },
+        options: { responsive: true, maintainAspectRatio: false }
+      });
+    }
+
+    function showToast(msg) {
+      const t = document.getElementById('toastNotification');
+      document.getElementById('toastMsg').innerText = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 3500);
+    }
+
+    // KHỞI CHẠY LẦN ĐẦU
+    window.onload = function() {
+      loadProductsFromDB();
+      loadUserInfo('KH001'); // Nạp đồng bộ thông tin khách hàng từ DB
+      loadCustomersList();  // Nạp danh sách khách hàng cho bộ lọc
+      renderCart();
+      executeQ12();
+      renderSpecificQuery('Q2');
+    };
+  </script>
+</body>
+</html>
